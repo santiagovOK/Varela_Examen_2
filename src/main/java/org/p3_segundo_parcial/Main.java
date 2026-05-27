@@ -24,7 +24,51 @@ import jakarta.persistence.Persistence;
 
 public class Main {
     public static void main(String[] args) {
+        // Descomentar la siguiente linea si desea cargar los datos de prueba
+        // poblarBaseDeDatosBase();
 
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        int opcion = -1;
+
+        do {
+            System.out.println("\n=== MENÚ PRINCIPAL ===");
+            System.out.println("1. Submenú Categorías");
+            System.out.println("2. Submenú Productos");
+            System.out.println("3. Reportes (Productos por categoría)");
+            System.out.println("0. Salir");
+            System.out.print("Elija una opción: ");
+
+            try {
+                opcion = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                opcion = -1;
+            }
+
+            switch (opcion) {
+                case 1:
+                    System.out.println("Menú Categorías en desarrollo...");
+                    break;
+                case 2:
+                    System.out.println("Menú Productos en desarrollo...");
+                    break;
+                case 3:
+                    System.out.println("Reportes en desarrollo...");
+                    break;
+                case 0:
+                    System.out.println("Saliendo del sistema...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+
+        scanner.close();
+        org.p3_segundo_parcial.util.JPAUtil.cerrar();
+    }
+
+    // De momento el ingreso masivo de datos fue refactorizado en `poblarBaseDeDatosBase()`, pero seguramente será eliminado
+
+    private static void poblarBaseDeDatosBase() {
         // 1) Instanciar 2 Usuarios usando Builder
         Usuario usuarioUno = Usuario.builder()
                 .nombre("Santiago")
@@ -125,21 +169,7 @@ public class Main {
 
         // --- TP Nº8 - CONFIGURAR Y EJECUTAR EL ENTITY MANAGER ---
         /*
-         * Aclaración ( Devolución TP N°8):
-         * Actualmente, la conexión se establece fijando en código el nombre de la
-         * unidad ("p3_segundo_parcial") y dependiendo completamente del archivo base persistence.xml.
-         *
-         * Sé que esto no sería viable en un entorno de producción, ya que si cambian las
-         * credenciales o la URL de la base de datos (un cambio de credenciales o motor de DB obligaría a recompilar el proyecto),
-         * tendríamos que recompilar la aplicación. La solución profesional y robusta sería pasar
-         * variables de entorno o un archivo de configuración externo (.env / .properties / .yaml)
-         * y crear el EntityManagerFactory de esta forma:
-         *
-         * Map<String, String> dbConfig = loadExternalConfig();
-         * EntityManagerFactory emf = Persistence.createEntityManagerFactory("p3_segundo_parcial", dbConfig);
-         *
-         * Por facilidad y para cumplir con los requerimientos del segundo parcial, mantengo el
-         * uso directo de la plantilla del persistence.xml ofrecida en el TP Nº8. Simplemente quiero dar cuenta de esta cuestión.
+         * Aclaración ( Devolución TP N°8): Ver comentario JPAUtil.java , que esta estrucura no usa por ser heredada de TP Nº8
          */
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("p3_segundo_parcial");
@@ -193,189 +223,6 @@ public class Main {
                 em.getTransaction().rollback();
             }
         }
-
-        // --- TP Nº8 - Consignas 3,4,5,6 - Operaciones CRUD solicitadas ---
-
-        try {
-            // Abrimos una nueva transacción para hacer las modificaciones
-            em.getTransaction().begin();
-
-            // Consigna 3 - Actualizar al menos 2 productos
-            System.out.println("\n--- 1. Actualizar al menos 2 productos ---");
-            Producto productoUpdate1 = em.find(Producto.class, 1L); // Asumiendo que obtendrá el de ID 1
-            if (productoUpdate1 != null) {
-                productoUpdate1.setPrecio(2000.0); // Cambiamos el precio
-                System.out.println("Producto 1 actualizado: " + productoUpdate1.getNombre() + " a $" + productoUpdate1.getPrecio());
-            }
-
-            Producto productoUpdate2 = em.find(Producto.class, 2L); // Asumiendo que obtendrá el de ID 2
-            if (productoUpdate2 != null) {
-                productoUpdate2.setStock(150); // Cambiamos el stock
-                System.out.println("Producto 2 actualizado: " + productoUpdate2.getNombre() + " a " + productoUpdate2.getStock() + " unidades");
-            }
-
-            // Consigna 4 - Buscar Usuario por id
-            System.out.println("\n--- 2. Buscar Usuario por ID ---");
-            Usuario usuarioBuscadoId = em.find(Usuario.class, 1L);
-            if (usuarioBuscadoId != null) {
-                System.out.println("Usuario encontrado por ID 1: " + usuarioBuscadoId.getNombre() + " " + usuarioBuscadoId.getApellido());
-            }
-
-            // Consigna 5 - Buscar Usuario por mail
-            System.out.println("\n--- 3. Buscar Usuario por mail ---");
-            String mailABuscar = "santiago@email.com";
-            // Se realiza la consulta mediante JPQL (no vimos createQuery en los materiales si no me equivoco, pero es una función del EntityManager en JPA utilizada para crear y definir una instancia de consulta dinámica)
-            Usuario usuarioBuscadoMail = em.createQuery("SELECT u FROM Usuario u WHERE u.mail = :mail", Usuario.class)
-                    .setParameter("mail", mailABuscar)
-                    .getSingleResult();
-            System.out.println("Usuario encontrado por mail: " + usuarioBuscadoMail.getNombre() + " - Rol: " + usuarioBuscadoMail.getRol());
-
-            // Consigna 6 - Borrar 1 producto
-            System.out.println("\n--- 4. Borrar 1 producto ---");
-
-            // Se busca el producto ID 10 ("Pizza Especial") para eliminarlo.
-
-            Producto productoABorrar = em.find(Producto.class, 10L);
-            // Consigna 6 - Borrar 1 producto (CORREGIDO C11: Manejo de integridad referencial)
-            System.out.println("\n--- 4. Borrar 1 producto ---");
-            Producto productoABorrar = em.find(Producto.class, 10L);
-
-            if (productoABorrar != null) {
-
-                // a. Validar que el producto no esté en ningún DetallePedido
-                Long countDetalles = em.createQuery(
-                                "SELECT COUNT(dp) FROM DetallePedido dp WHERE dp.producto = :prod", Long.class)
-                        .setParameter("prod", productoABorrar)
-                        .getSingleResult();
-
-                if (countDetalles > 0) {
-                    System.out.println("No se puede borrar el producto '" + productoABorrar.getNombre() +
-                            "' porque está asociado a " + countDetalles + " pedidos.");
-                } else {
-                    // b. Desvincular de la Categoría para mantener la consistencia en memoria
-                    if (productoABorrar.getCategoria() != null) {
-                        productoABorrar.getCategoria().getProductos().remove(productoABorrar);
-                    }
-
-                    // c. Remover la entidad
-                    em.remove(productoABorrar);
-                    System.out.println("Producto borrado exitosamente: " + productoABorrar.getNombre());
-                }
-            } else {
-                System.out.println("El producto con ID 10 no fue encontrado.");
-            }
-
-            // Se insertan las operaciones a la base de datos
-            em.getTransaction().commit();
-
-        } catch (jakarta.persistence.PersistenceException e) {
-            System.err.println("Fallo durante las operaciones CRUD (Violación de integridad / sintaxis JPQL): " + e.getMessage());
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-        } catch (Exception e) {
-            System.err.println("Fallo inesperado general en las operaciones CRUD.");
-            e.printStackTrace();
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-        } finally {
-            // Cerramos el EntityManager y su Factory porque ya terminamos todas las interacciones con JPA
-            em.close();
-            emf.close();
-        }
-
-        // Mostrar por consola un producto
-        System.out.println("Muestro un producto:");
-        System.out.println(prod1);
-
-        // Mostrar el listado de productos cargados
-        System.out.println("\n=== Listado de productos cargados ===");
-        for (Producto producto : productos) {
-            System.out.println(producto);
-        }
-
-        // Obtener y mostrar pedidos del usuario con mas pedidos
-        Usuario usuarioConMasPedidos = null;
-        int maxPedidos = -1;
-
-        for (Map.Entry<Usuario, Set<Pedido>> entrada : pedidosPorUsuario.entrySet()) {
-            int cantidadPedidos = entrada.getValue().size();
-            if (cantidadPedidos > maxPedidos) {
-                maxPedidos = cantidadPedidos;
-                usuarioConMasPedidos = entrada.getKey();
-            }
-        }
-
-        System.out.println("\n=== Usuario con mas pedidos ===");
-        System.out.println(usuarioConMasPedidos);
-        System.out.println("Cantidad de pedidos: " + maxPedidos);
-
-        if (usuarioConMasPedidos != null && pedidosPorUsuario.containsKey(usuarioConMasPedidos)) {
-            Set<Pedido> pedidosDelUsuario = pedidosPorUsuario.get(usuarioConMasPedidos);
-            if (pedidosDelUsuario != null) {
-                for (Pedido pedido : pedidosDelUsuario) {
-                    System.out.println(pedido);
-                    for (DetallePedido detalle : pedido.getDetalles()) {
-                        System.out.println("  " + detalle);
-                    }
-                }
-            }
-        }
-
-        // Instanciar un producto nuevo con los mismos campos comparados por equals
-        Producto productoDuplicado = Producto.builder()
-                .nombre("Coca Cola 500ml")
-                .precio(1800.0)
-                .descripcion("Gaseosa cola")
-                .stock(50)
-                .imagen("coca500.png")
-                .disponible(true)
-                .categoria(categoriaUno)
-                .build();
-
-        System.out.println("\n=== Comparacion de producto nuevo vs coleccion ===");
-        for (Producto producto : productos) {
-            System.out.println("Duplicado equals " + producto.getNombre() + " -> " + productoDuplicado.equals(producto));
-        }
-        System.out.println("Set contiene producto duplicado: " + productos.contains(productoDuplicado));
-
-        // Prueba final: Mostrar el UsuarioDTO
-        System.out.println("\n=== Demostración de Usuario DTO ===");
-        UsuarioDTO dto = new UsuarioDTO(
-                usuarioUno.getNombre(),
-                usuarioUno.getApellido(),
-                usuarioUno.getMail(),
-                usuarioUno.getCelular()
-        );
-        System.out.println("Usuario DTO generado: " + dto);
-
-        // --- SALIDAS POR CONSOLA SOLICITADAS PARA TP UNIDAD 7 ---
-
-
-        // Consigna 2 - Mostrar por consola productos disponibles
-        System.out.println("\n=== Productos disponibles ===");
-        productos.stream()
-                // equivaldría a p -> p.isDisponible()
-                .filter(Producto::isDisponible)
-                .forEach(p -> System.out.println("- " + p.getNombre()));
-
-        // Consigna 3 - Mostrar por consola la cantidad de ítems que tiene un pedido
-
-        System.out.println("\n=== Cantidad de ítems en Pedido 1 ===");
-        int cantidadItems = pedido1.getDetalles().stream()
-                .mapToInt(DetallePedido::getCantidad)
-                .sum();
-        System.out.println("El pedido 1 contiene " + cantidadItems + " ítems en total.");
-
-        // Consigna 4 - Detectar productos que tengan menos de 5 como valor en stock (cambié "Coca Cola 500ml" (prod1) para que aparezca)
-
-        System.out.println("\n=== Productos con stock menor a 5 ===");
-        productos.stream()
-                .filter(p -> p.getStock() < 5)
-                .forEach(p -> System.out.println("ALERTA - " + p.getNombre() + " (Stock: " + p.getStock() + ")"));
-
     }
-
-
 }
+
