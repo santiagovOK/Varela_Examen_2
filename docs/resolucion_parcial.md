@@ -2,13 +2,12 @@
 
 ## Preparación del entorno y refactorización
 
-- **Refactorización de `Main.java` y creación del menú interactivo**: Se limpió el `main` de la lógica de trabajos anteriores para dar lugar al menú de consola requerido (Categorías, Productos, Reportes).
-- **Preservación de datos de prueba**: Se extrajo la creación de datos semilla (usuarios, categorías, productos, pedidos) al método `poblarBaseDeDatosBase()`. Esto permite disponer (por ahora) de datos iniciales para probar los reportes sin necesidad de cargar todo a mano, sin interferir con el menú.
+- **Refactorización de `Main.java` y creación del menú interactivo**: Se limpió el `main` de la lógica de trabajos anteriores para dar lugar parcialmente al menú de consola requerido (Categorías, Productos, Reportes).
 - **Eliminación del viejo CRUD en `Main`**: Se borraron las consultas de la base de datos que se hacían de manera suelta (`find`, `remove` físicos). Esto se hizo porque la nueva arquitectura exige el uso del **Patrón Repository**, donde las operaciones estarán encapsuladas y aisladas. Además, la consigna demanda que las eliminaciones ahora sean lógicas (`eliminado = true`) y no físicas.
-- **Creación de `JPAUtil`**: Se movió la lógica de instanciación del `EntityManagerFactory` a la clase utilitaria `JPAUtil` para garantizar que la conexión se recicle correctamente de forma centralizada al ser utilizada por los repositorios.
+- **Creación de `JPAUtil`**: Se movió la lógica de instanciación del `EntityManagerFactory` a la clase utilitaria `JPAUtil` para garantizar que la conexión se recicle correctamente de forma centralizada al ser utilizada por los repositorios. No había sido creado para el TP Nº8, pero claramente es una buena práctica y facilita el mantenimiento de la conexión a la base de datos.
 
 ## Implementación de funcionalidades (Siguiendo las consignas del parcial (`consigna.md`))
 
 - **Creación de `BaseRepository` (HU-01)**: Se desarrolló un repositorio genérico `BaseRepository<T>` abstracto para aislar las operaciones CRUD comunes usando JPA y `JPAUtil`. Incluye transacciones asiladas en los métodos `guardar()`, uso de `Optional` en la búsqueda, y provee listado de `activos` mediante JPQL e `eliminarLogico()` seteando el campo de la base `eliminado = true`, garantizando siempre el cierre del `EntityManager`.
-
-
+- **Implementación de `CategoriaRepository` (HU-02)**: Se creó la clase extendiendo `BaseRepository<Categoria>` y llamando a `super(Categoria.class)`, heredando así todo el CRUD general de manera limpia y sin código adicional.
+- **Implementación de `ProductoRepository` (HU-02 y HU-09)**: Extiende de `BaseRepository<Producto>`. Se agregó el método `buscarPorCategoria(Long categoriaId)` implementado con JPQL y parámetros nombrados, devolviendo un `TypedQuery<Producto>` para filtrar productos activos de una categoría, incluyendo el comentario explicativo exigido en la consigna.
