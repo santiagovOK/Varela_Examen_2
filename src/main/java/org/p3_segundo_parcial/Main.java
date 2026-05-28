@@ -12,6 +12,7 @@ import org.p3_segundo_parcial.enums.Estado;
 import org.p3_segundo_parcial.enums.FormaPago;
 import org.p3_segundo_parcial.enums.Rol;
 import org.p3_segundo_parcial.repository.CategoriaRepository;
+import org.p3_segundo_parcial.repository.ProductoRepository;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class Main {
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         CategoriaRepository categoriaRepo = new CategoriaRepository();
+        ProductoRepository productoRepo = new ProductoRepository();
         int opcion = -1;
 
         do {
@@ -55,7 +57,7 @@ public class Main {
                     menuCategorias(scanner, categoriaRepo);
                     break;
                 case 2:
-                    System.out.println("Menú Productos en desarrollo...");
+                    menuProductos(scanner, productoRepo, categoriaRepo);
                     break;
                 case 3:
                     System.out.println("Reportes en desarrollo...");
@@ -197,6 +199,226 @@ public class Main {
         }
         for (Categoria c : activas) {
             System.out.println("ID: " + c.getId() + " | Nombre: " + c.getNombre() + " | Descripción: " + c.getDescripcion());
+        }
+    }
+
+    // 3.5 - ABM de Productos en Main (HU-06 / HU-07 / HU-08)
+
+    private static void menuProductos(java.util.Scanner scanner, ProductoRepository productoRepo, CategoriaRepository categoriaRepo) {
+        int opcion = -1;
+        do {
+            System.out.println("\n=== SUBMENÚ PRODUCTOS ===");
+            System.out.println("1. Alta de producto");
+            System.out.println("2. Baja lógica de producto");
+            System.out.println("3. Modificación de producto");
+            System.out.println("4. Listado de productos activos");
+            System.out.println("0. Volver al menú principal");
+            System.out.print("Elija una opción: ");
+
+            try {
+                opcion = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                opcion = -1;
+            }
+
+            switch (opcion) {
+                case 1:
+                    altaProducto(scanner, productoRepo, categoriaRepo);
+                    break;
+                case 2:
+                    bajaProducto(scanner, productoRepo);
+                    break;
+                case 3:
+                    modificarProducto(scanner, productoRepo);
+                    break;
+                case 4:
+                    listarProductos(productoRepo);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }
+
+    // HU-06 - Implementación de Alta en el Menú de Productos
+    private static void altaProducto(java.util.Scanner scanner, ProductoRepository productoRepo, CategoriaRepository categoriaRepo) {
+        System.out.println("\n--- ALTA DE PRODUCTO ---");
+        
+        java.util.List<Categoria> categoriasActivas = categoriaRepo.listarActivos();
+        if (categoriasActivas.isEmpty()) {
+            System.out.println("Error: No hay categorías activas. Debe dar de alta al menos una categoría primero.");
+            return;
+        }
+
+        System.out.println("Seleccione una categoría activa por su ID:");
+        listarCategorias(categoriaRepo);
+        System.out.print("ID Categoría: ");
+        
+        Long idCategoria;
+        try {
+            idCategoria = Long.parseLong(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: ID inválido. Operación cancelada.");
+            return;
+        }
+
+        java.util.Optional<Categoria> optCat = categoriaRepo.buscarPorId(idCategoria);
+        if (optCat.isEmpty() || optCat.get().isEliminado()) {
+            System.out.println("Error: Categoría no encontrada o inactiva.");
+            return;
+        }
+
+        System.out.print("Ingrese nombre del producto: ");
+        String nombre = scanner.nextLine().trim();
+        if (nombre.isEmpty()) {
+            System.out.println("Error: El nombre no puede estar vacío.");
+            return;
+        }
+
+        double precio;
+        try {
+            System.out.print("Ingrese precio del producto: ");
+            precio = Double.parseDouble(scanner.nextLine());
+            if (precio <= 0) {
+                System.out.println("Error: El precio debe ser mayor a 0.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Formato de precio inválido.");
+            return;
+        }
+
+        int stock;
+        try {
+            System.out.print("Ingrese stock del producto: ");
+            stock = Integer.parseInt(scanner.nextLine());
+            if (stock < 0) {
+                System.out.println("Error: El stock no puede ser negativo.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Formato de stock inválido.");
+            return;
+        }
+
+        System.out.print("Ingrese descripción del producto (opcional): ");
+        String descripcion = scanner.nextLine().trim();
+
+        Producto producto = new Producto();
+        producto.setNombre(nombre);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+        producto.setDescripcion(descripcion);
+        producto.setCategoria(optCat.get());
+        producto.setDisponible(true); // Opcional, marcar por defecto
+
+        productoRepo.guardar(producto);
+        System.out.println("Producto creado exitosamente con ID " + producto.getId() + " en la categoría '" + optCat.get().getNombre() + "'.");
+    }
+
+    // HU-08 - Implementación de Baja en el Menú de Productos
+    private static void bajaProducto(java.util.Scanner scanner, ProductoRepository productoRepo) {
+        System.out.println("\n--- BAJA LÓGICA DE PRODUCTO ---");
+        System.out.print("Ingrese el ID del producto a dar de baja: ");
+        try {
+            Long id = Long.parseLong(scanner.nextLine());
+            java.util.Optional<Producto> optProd = productoRepo.buscarPorId(id);
+
+            if (optProd.isPresent() && !optProd.get().isEliminado()) {
+                String nombreProd = optProd.get().getNombre();
+                boolean eliminado = productoRepo.eliminarLogico(id);
+                if (eliminado) {
+                    System.out.println("Producto '" + nombreProd + "' dado de baja exitosamente.");
+                } else {
+                    System.out.println("Error al intentar dar de baja el producto.");
+                }
+            } else {
+                System.out.println("Error: El ID no existe o el producto ya está dado de baja.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: ID inválido.");
+        }
+    }
+
+    // HU-07 - Implementación de Modificación en el Menú de Productos
+    private static void modificarProducto(java.util.Scanner scanner, ProductoRepository productoRepo) {
+        System.out.println("\n--- MODIFICACIÓN DE PRODUCTO ---");
+        listarProductos(productoRepo);
+        System.out.print("\nIngrese el ID del producto a modificar: ");
+        try {
+            Long id = Long.parseLong(scanner.nextLine());
+            java.util.Optional<Producto> optProd = productoRepo.buscarPorId(id);
+
+            if (optProd.isPresent() && !optProd.get().isEliminado()) {
+                Producto prod = optProd.get();
+                System.out.println("Valores actuales:");
+                System.out.println("Nombre: " + prod.getNombre());
+                System.out.println("Precio: " + prod.getPrecio());
+                System.out.println("Stock: " + prod.getStock());
+
+                System.out.print("Nuevo nombre (deje en blanco para no modificar): ");
+                String nuevoNombre = scanner.nextLine().trim();
+                
+                System.out.print("Nuevo precio (deje en blanco para no modificar): ");
+                String precioStr = scanner.nextLine().trim();
+                
+                System.out.print("Nuevo stock (deje en blanco para no modificar): ");
+                String stockStr = scanner.nextLine().trim();
+
+                if (!nuevoNombre.isEmpty()) {
+                    prod.setNombre(nuevoNombre);
+                }
+
+                if (!precioStr.isEmpty()) {
+                    try {
+                        double nuevoPrecio = Double.parseDouble(precioStr);
+                        if (nuevoPrecio > 0) {
+                            prod.setPrecio(nuevoPrecio);
+                        } else {
+                            System.out.println("Error: El precio no puede ser menor o igual a 0. Se conservará el precio anterior.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: Formato de precio inválido. Se conservará el precio anterior.");
+                    }
+                }
+
+                if (!stockStr.isEmpty()) {
+                    try {
+                        int nuevoStock = Integer.parseInt(stockStr);
+                        if (nuevoStock >= 0) {
+                            prod.setStock(nuevoStock);
+                        } else {
+                            System.out.println("Error: El stock no puede ser negativo. Se conservará el stock anterior.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: Formato de stock inválido. Se conservará el stock anterior.");
+                    }
+                }
+
+                productoRepo.guardar(prod);
+                System.out.println("Producto actualizado exitosamente.");
+            } else {
+                System.out.println("Error: ID no encontrado o el producto está inactivo.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: ID inválido.");
+        }
+    }
+
+    private static void listarProductos(ProductoRepository productoRepo) {
+        System.out.println("\n--- LISTADO DE PRODUCTOS ACTIVOS ---");
+        java.util.List<Producto> activos = productoRepo.listarActivos();
+        if (activos.isEmpty()) {
+            System.out.println("No hay productos activos.");
+            return;
+        }
+        for (Producto p : activos) {
+            String catNombre = (p.getCategoria() != null) ? p.getCategoria().getNombre() : "Sin categoría";
+            System.out.println("ID: " + p.getId() + " | Nombre: " + p.getNombre() + 
+                               " | Precio: $" + p.getPrecio() + " | Stock: " + p.getStock() + 
+                               " | Categoría: " + catNombre);
         }
     }
 }

@@ -15,5 +15,8 @@
 ## Modificaciones del sistema base e Interfaz
 
 - **Implementación parcial del Menú (HU-03, HU-04, HU-05)**: Se integró de manera funcional el Submenú de **Categorías** dentro del ciclo interactivo en `Main.java` utilizando el `CategoriaRepository`. Consta de los cuatro requerimientos principales: Alta confirmando ID y nombre verificados, Baja lógica validando existencias, un procedimiento de Modificación que preserva en blanco los atributos sin cambio alguno, y finalmente el Listado completo de únicamente elementos cuyo `eliminado = false`.
+
 - **Ajustes de terminal en `build.gradle.kts`**: Se agregó configuración para asignar el `standardInput` a la tarea run. Esto soluciona una limitación por defecto de Gradle que impedía la interacción manual a través del objeto `java.util.Scanner(System.in)`, arrojando un error de `NoSuchElementException`.
 - **Higiene visual en Logs de Consola**: Se configuró vía código en el arranque mismo del proyecto (`Main.java`) el nivel de logging de `org.hibernate` hacia `SEVERE`. La inicialización del `EntityManagerFactory` ensuciaba con mensajes "INFO" y "WARN" el menú estándar, entorpeciendo la usabilidad requerida para la entrega interactiva.
+
+- **Implementación parcial del Menú (HU-06, HU-07, HU-08)**: Se integró el Submenú de **Productos** utilizando el `ProductoRepository`. Se implementó el Alta de Producto forzando la selección previa de una Categoría listada, validando tipo y cantidad para `precio` (> 0) y `stock` (>= 0). La Baja Lógica opera verificando la existencia activa del registro. Durante la Modificación, se pueden dejar campos en blanco para mantener sus valores previos; y en el Listado, se incorporó la lectura relacional (`@ManyToOne`) mostrando el nombre de la Categoría propia de cada producto.
