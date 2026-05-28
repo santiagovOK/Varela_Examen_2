@@ -2,8 +2,6 @@ package org.p3_segundo_parcial.repository;
 
 // Santiago Octavio Varela / @santiagovOK (GitHub) <santiago.varela@tupad.utn.edu.ar>
 
-package org.p3_segundo_parcial.repository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.p3_segundo_parcial.entities.Base;
