@@ -29,6 +29,11 @@ application {
     mainClass.set("org.p3_segundo_parcial.Main")
 }
 
+// Configuración para que Gradle permita interactuar mediante estándar input
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 tasks.test {
     useJUnitPlatform()
 }
