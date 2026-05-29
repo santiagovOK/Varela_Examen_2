@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Scanner;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -419,6 +420,58 @@ public class Main {
             System.out.println("ID: " + p.getId() + " | Nombre: " + p.getNombre() + 
                                " | Precio: $" + p.getPrecio() + " | Stock: " + p.getStock() + 
                                " | Categoría: " + catNombre);
+        }
+    }
+
+    // HU-09 - Consulta JPQL / Reporte de Productos por Categoría
+
+    private static void menuReportes(Scanner scanner, ProductoRepository productoRepo, CategoriaRepository categoriaRepo) {
+        System.out.println("\n--- REPORTES ---");
+        System.out.println("Productos por categoría");
+
+        // Mostrar categorías activas
+        // Almaceno categorías activas en una variable (var) para evitar hacer múltiples consultas al repositorio durante la validación y selección de categoría. Interpreto que es una buena práctica en este caso
+        var categorias = categoriaRepo.listarActivos();
+        if (categorias.isEmpty()) {
+            System.out.println("No hay categorías activas.");
+            return;
+        }
+
+        System.out.println("Categorías disponibles:");
+        for (var cat : categorias) {
+            System.out.println("ID: " + cat.getId() + " - " + cat.getNombre());
+        }
+
+        // Pedir ID de categoría al usuario
+        System.out.print("Ingrese ID de la categoría para ver sus productos: ");
+        Long idCat;
+        try {
+            idCat = Long.parseLong(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: ID inválido.");
+            return;
+        }
+
+        // Validar que la categoría elegida exista y esté activa
+        // Main llama a ProductoRepository y espera la respuesta para buscar por buscarPorId. Así se cumplen los criterios 2,3 y 4 de la HU-09
+        var categoriaOpt = categoriaRepo.buscarPorId(idCat);
+        if (categoriaOpt.isEmpty() || categoriaOpt.get().isEliminado()) {
+            System.out.println("Error: La categoría no existe o está inactiva.");
+            return;
+        }
+
+        // Buscar productos usando el método JPQL (mismo caso que `categorias` respecto al uso de var)
+        var productos = productoRepo.buscarPorCategoria(idCat);
+
+        // Mostrar informe explícito si está vacío o los productos encontrados
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos vinculados a la categoría." + categoriaOpt.get().getNombre() + "'.");
+        } else {
+            System.out.println("\nProductos de la categoría '" + categoriaOpt.get().getNombre() + "':");
+            for (var prod : productos) {
+                System.out.println(String.format("ID: %d | Nombre: %s | Precio: %.2f | Stock: %d",
+                        prod.getId(), prod.getNombre(), prod.getPrecio(), prod.getStock()));
+            }
         }
     }
 }
