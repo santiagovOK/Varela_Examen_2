@@ -4,7 +4,7 @@ package org.p3_segundo_parcial.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import org.p3_segundo_parcial.entities.Base;
+import org.p3_segundo_parcial.model.Base;
 import org.p3_segundo_parcial.util.JPAUtil;
 
 import java.util.List;

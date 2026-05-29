@@ -1,4 +1,4 @@
-package org.p3_segundo_parcial.entities;
+package org.p3_segundo_parcial.model;
 
 /*
  *
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.p3_segundo_parcial.enums.Rol;
+import org.p3_segundo_parcial.model.enums.Rol;
 
 @Getter
 @Setter

@@ -8,12 +8,12 @@
 
         <!-- TUS CLASES VAN ACA -->
 
-        <class>org.p3_segundo_parcial.entities.Base</class>
-        <class>org.p3_segundo_parcial.entities.Categoria</class>
-        <class>org.p3_segundo_parcial.entities.DetallePedido</class>
-        <class>org.p3_segundo_parcial.entities.Pedido</class>
-        <class>org.p3_segundo_parcial.entities.Producto</class>
-        <class>org.p3_segundo_parcial.entities.Usuario</class>
+        <class>org.p3_segundo_parcial.model.Base</class>
+        <class>org.p3_segundo_parcial.model.Categoria</class>
+        <class>org.p3_segundo_parcial.model.DetallePedido</class>
+        <class>org.p3_segundo_parcial.model.Pedido</class>
+        <class>org.p3_segundo_parcial.model.Producto</class>
+        <class>org.p3_segundo_parcial.model.Usuario</class>
 
         <properties>
             <!-- JDBC H2 en archivo -->

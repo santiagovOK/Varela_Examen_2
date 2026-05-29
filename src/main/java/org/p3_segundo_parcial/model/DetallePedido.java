@@ -1,4 +1,4 @@
-package org.p3_segundo_parcial.entities;
+package org.p3_segundo_parcial.model;
 
 /*
  *

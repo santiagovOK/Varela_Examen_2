@@ -3,14 +3,14 @@ package org.p3_segundo_parcial;
 // Santiago Octavio Varela / @santiagovOK (GitHub) <santiago.varela@tupad.utn.edu.ar>
 
 import org.p3_segundo_parcial.dtos.UsuarioDTO;
-import org.p3_segundo_parcial.entities.Categoria;
-import org.p3_segundo_parcial.entities.DetallePedido;
-import org.p3_segundo_parcial.entities.Pedido;
-import org.p3_segundo_parcial.entities.Producto;
-import org.p3_segundo_parcial.entities.Usuario;
-import org.p3_segundo_parcial.enums.Estado;
-import org.p3_segundo_parcial.enums.FormaPago;
-import org.p3_segundo_parcial.enums.Rol;
+import org.p3_segundo_parcial.model.Categoria;
+import org.p3_segundo_parcial.model.DetallePedido;
+import org.p3_segundo_parcial.model.Pedido;
+import org.p3_segundo_parcial.model.Producto;
+import org.p3_segundo_parcial.model.Usuario;
+import org.p3_segundo_parcial.model.enums.Estado;
+import org.p3_segundo_parcial.model.enums.FormaPago;
+import org.p3_segundo_parcial.model.enums.Rol;
 import org.p3_segundo_parcial.repository.CategoriaRepository;
 import org.p3_segundo_parcial.repository.ProductoRepository;
 

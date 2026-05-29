@@ -4,6 +4,7 @@
 
 - **Refactorización de `Main.java` y creación del menú interactivo**: Se limpió el `main` de la lógica de trabajos anteriores para dar lugar parcialmente al menú de consola requerido (Categorías, Productos, Reportes).
 - **Eliminación del viejo CRUD en `Main`**: Se borraron las consultas de la base de datos que se hacían de manera suelta (`find`, `remove` físicos). Esto se hizo porque la nueva arquitectura exige el uso del **Patrón Repository**, donde las operaciones estarán encapsuladas y aisladas. Además, la consigna demanda que las eliminaciones ahora sean lógicas (`eliminado = true`) y no físicas.
+- **Reestructuración de paquetes**: Se renombró el directorio `entities` a `model` y se reubicó `enums` en `model/enums` para cumplir en su totalidad con el esquema de arquitectura exigido en la consigna, adaptando correspondientemente `persistence.xml` y los imports.
 - **Creación de `JPAUtil`**: Se movió la lógica de instanciación del `EntityManagerFactory` a la clase utilitaria `JPAUtil` para garantizar que la conexión se recicle correctamente de forma centralizada al ser utilizada por los repositorios. No había sido creado para el TP Nº8, pero claramente es una buena práctica y facilita el mantenimiento de la conexión a la base de datos.
 
 ## Implementación de funcionalidades (Siguiendo las consignas del parcial (`consigna.md`))

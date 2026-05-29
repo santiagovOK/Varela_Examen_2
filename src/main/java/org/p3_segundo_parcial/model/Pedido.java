@@ -1,4 +1,4 @@
-package org.p3_segundo_parcial.entities;
+package org.p3_segundo_parcial.model;
 
 /*
  *
@@ -20,8 +20,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import org.p3_segundo_parcial.enums.Estado;
-import org.p3_segundo_parcial.enums.FormaPago;
+import org.p3_segundo_parcial.model.enums.Estado;
+import org.p3_segundo_parcial.model.enums.FormaPago;
 import org.p3_segundo_parcial.interfaces.Calculable;
 
 import java.time.LocalDate;

@@ -2,7 +2,7 @@ package org.p3_segundo_parcial.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.p3_segundo_parcial.entities.Producto;
+import org.p3_segundo_parcial.model.Producto;
 import org.p3_segundo_parcial.util.JPAUtil;
 
 import java.util.List;

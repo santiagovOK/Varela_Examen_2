@@ -1,6 +1,6 @@
 package org.p3_segundo_parcial.repository;
 
-import org.p3_segundo_parcial.entities.Categoria;
+import org.p3_segundo_parcial.model.Categoria;
 
 // Santiago Octavio Varela / @santiagovOK (GitHub) <santiago.varela@tupad.utn.edu.ar>
 
