@@ -1,1 +1,1 @@
-rootProject.name = "Varela_Examen_2"
+rootProject.name = "Varela_Santiago_ParcialJPA"
