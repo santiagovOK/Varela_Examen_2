@@ -8,6 +8,18 @@ Este documento describe los pasos que se deben seguir para corroborar manualment
 
 ---
 
+# Validación básica (para video)
+
+1. Probar la generación de la Categoria.
+2. Probar la creación de productos y asociarlos a categoría.
+3. Mostrar los productos por id de categoría
+4. Eliminar un producto de la categoría.
+5. Mostrar los productos por id de categoría y comprobar que ya no se muestra. )
+
+---
+
+# Validación detallada
+
 ## 1. Validación del ABM de Categorías (HU-03, HU-04, HU-05)
 Al ejecutar el `Main.java`, ingrese al menú de Categorías.
  

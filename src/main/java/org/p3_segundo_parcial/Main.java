@@ -128,8 +128,10 @@ public class Main {
         Categoria cat = new Categoria();
         cat.setNombre(nombre);
         cat.setDescripcion(descripcion);
+        cat.setCreatedAt(java.time.LocalDateTime.now());
+        cat.setEliminado(false);
 
-        categoriaRepo.guardar(cat);
+        cat = categoriaRepo.guardar(cat);
         System.out.println("Categoría creada exitosamente con ID: " + cat.getId());
     }
     // HU-05 - Implementación de Baja en el Menú de Categorias
@@ -314,8 +316,10 @@ public class Main {
         producto.setDescripcion(descripcion);
         producto.setCategoria(optCat.get());
         producto.setDisponible(true); // Opcional, marcar por defecto
+        producto.setCreatedAt(java.time.LocalDateTime.now());
+        producto.setEliminado(false);
 
-        productoRepo.guardar(producto);
+        producto = productoRepo.guardar(producto);
         System.out.println("Producto creado exitosamente con ID " + producto.getId() + " en la categoría '" + optCat.get().getNombre() + "'.");
     }
 
@@ -465,7 +469,7 @@ public class Main {
 
         // Mostrar informe explícito si está vacío o los productos encontrados
         if (productos.isEmpty()) {
-            System.out.println("No hay productos vinculados a la categoría." + categoriaOpt.get().getNombre() + "'.");
+            System.out.println("No hay productos vinculados a la categoría " + categoriaOpt.get().getNombre() + ".");
         } else {
             System.out.println("\nProductos de la categoría '" + categoriaOpt.get().getNombre() + "':");
             for (var prod : productos) {

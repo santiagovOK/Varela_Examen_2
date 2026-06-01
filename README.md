@@ -62,6 +62,8 @@ Para visualizar la base de datos H2 generada en el directorio `data/`, se puede 
 - **Usuario:** `sa`
 - **Contraseña:** *(vacío)*
 
+**Aviso de modo de conexión:** Al utilizar la base de datos de H2 montada en archivo de manera convencional, esta no admite múltiples conexiones en diferentes programas al mismo tiempo por bloqueos en el sistema de archivos (`.lock`). Si el código en Java (`Main`) está ejecutándose, debe finalizar su ejecución antes de que sea visualizado mediante un gestor de base de datos. Una alternativa si se prefiere trabajar al mismo tiempo es configurar la variable `AUTO_SERVER=TRUE` de H2 en el `persistence.xml`.
+
 ## Licencia
 
 Este proyecto se distribuye bajo la [Licencia MIT](LICENCE.TXT).
