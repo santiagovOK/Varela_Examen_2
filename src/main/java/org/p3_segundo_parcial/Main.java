@@ -28,7 +28,7 @@ import jakarta.persistence.Persistence;
 public class Main {
     public static void main(String[] args) {
 
-        // Deshabilitar logs de Hibernate (java.util.logging) ya que entorpecen la visión del menú
+        // Deshabilitar algunos logs de Hibernate (java.util.logging , aparecen en rojo y son invasivos) ya que entorpecen la visión del menú
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.SEVERE);
 
         // Inicializar JPA al principio del programa para evitar problemas de EntityManagerFactory no inicializado.
@@ -61,7 +61,7 @@ public class Main {
                     menuProductos(scanner, productoRepo, categoriaRepo);
                     break;
                 case 3:
-                    System.out.println("Reportes en desarrollo...");
+                    menuReportes(scanner, productoRepo, categoriaRepo);
                     break;
                 case 0:
                     System.out.println("Saliendo del sistema...");

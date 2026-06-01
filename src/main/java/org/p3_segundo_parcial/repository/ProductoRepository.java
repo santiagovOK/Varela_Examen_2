@@ -15,6 +15,8 @@ public class ProductoRepository extends BaseRepository<Producto> {
         super(Producto.class);
     }
 
+    // buscarPorCategoria es el método propio del repositorio ProductoRepository, que no forma parte de la clase base. Este método se encarga de buscar productos activos (no eliminados - baja lógica) que pertenecen a una categoría específica, identificada por su ID.
+
     public List<Producto> buscarPorCategoria(Long categoriaId) {
         // Se pide un EntityManager para esta operación específica
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();

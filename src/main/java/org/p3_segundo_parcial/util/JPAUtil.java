@@ -24,7 +24,7 @@ public class JPAUtil {
 
 
 /*
- * Aclaración ( Devolución TP N°8):
+ * Aclaración ( Debido a recomendación en devolución TP N°8):
  * Actualmente, la conexión se establece fijando en código el nombre de la
  * unidad ("p3_segundo_parcial") y dependiendo completamente del archivo base persistence.xml.
  *
@@ -38,5 +38,5 @@ public class JPAUtil {
  * EntityManagerFactory emf = Persistence.createEntityManagerFactory("p3_segundo_parcial", dbConfig);
  *
  * Por facilidad y para cumplir con los requerimientos del segundo parcial, mantengo el
- * uso directo de la plantilla del persistence.xml ofrecida en el TP Nº8. Simplemente quiero dar cuenta de esta cuestión.
+ * uso directo de la plantilla del persistence.xml ofrecida en el TP Nº8 (ya que solicitan que no modifiquemos demasiado del proyecto base). Simplemente quiero dar cuenta de esta cuestión.
  */
