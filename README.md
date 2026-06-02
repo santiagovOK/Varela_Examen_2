@@ -8,12 +8,12 @@
 
 # Links de relevancia para la evaluación
 
-**Link al repositorio en Github: https://github.com/santiagovOK/**
+**Link al repositorio en Github: https://github.com/santiagovOK/Varela_Santiago_ParcialJPA**
 
-**- Video explicativo: **
-**- Video explicativo (link B):**
+**- Video explicativo: https://youtu.be/KVFQKNRTZ28**
+**- Video explicativo (link B): https://drive.google.com/file/d/1vB_yEBcavuRenIN9kuVby6jRIV3yxDUV/view?usp=sharing**
 
-**- Presentación utilizada en el video:**
+**- Presentación utilizada en el video: https://whimsical.com/santiagovarela/p3-segundo-parcial-9MS1qVAqevDTfb5EQScKnb**
 
 Resumen breve de resolución de cada una de las consignas (principalmente para guiarme yo). Pueden verlo aquí: [docs/resolucion_parcial.md](docs/resolucion_parcial.md)
 
