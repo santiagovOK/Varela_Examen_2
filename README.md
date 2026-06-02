@@ -21,7 +21,9 @@ Resumen breve de resolución de cada una de las consignas (principalmente para g
 
 ## Objetivo General
 
-Extender el proyecto Gradle del TP de la Unidad 8 creando los repositorios para las entidades Categoria y Producto, e implementando un menu de consola que permita realizar operaciones ABM sobre dichas entidades. Se incluye ademas una consulta JPQL personalizada para filtrar productos por categoria. Mi resolución del TP de la Unidad 8 fue la [siguiente](https://github.com/santiagovOK/UTN-TUPaD-P3/tree/main/unidad8_jpa)
+Extender el proyecto Gradle del TP de la Unidad 8 creando los repositorios para las entidades Categoria y Producto, e implementando un menu de consola que permita realizar operaciones ABM sobre dichas entidades. Se incluye ademas una consulta JPQL personalizada para filtrar productos por categoria. 
+
+Mi resolución del TP de la Unidad 8 anterior fue la [esta](https://github.com/santiagovOK/UTN-TUPaD-P3/tree/main/unidad8_jpa).
 
 ### Resumen de funcionalidades implementadas:
 
@@ -53,7 +55,7 @@ Pueden ver el paso a paso de las validaciones manuales que seguí para el cumpli
 
 # Detalles sobre la persistencia de la base de datos y el uso de H2
 
-**Nota importante sobre la persistencia:** El proyecto está configurado para guardar los datos físicamente en un archivo local (indicado por el prefijo `file:` en la URL JDBC), no es una base de datos en memoria (`mem:`). Esto significa que la información persiste de forma permanente en el directorio `data/` incluso al cerrar la aplicación, permitiendo consultarla posteriormente.
+**Nota importante sobre la persistencia:** El proyecto está configurado para guardar los datos físicamente en un archivo local (indicado por el prefijo `h2:` en la URL JDBC). Esto significa que la información persiste de forma permanente en el directorio `data/` incluso al cerrar la aplicación, permitiendo consultarla posteriormente.
 
 Para visualizar la base de datos H2 generada en el directorio `data/`, se puede utilizar la consola de H2 o cualquier IDE que soporte conexiones JDBC conectándose a la misma. 
 
