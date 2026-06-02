@@ -23,7 +23,7 @@ Resumen breve de resolución de cada una de las consignas (principalmente para g
 
 Extender el proyecto Gradle del TP de la Unidad 8 creando los repositorios para las entidades Categoria y Producto, e implementando un menu de consola que permita realizar operaciones ABM sobre dichas entidades. Se incluye ademas una consulta JPQL personalizada para filtrar productos por categoria. 
 
-Mi resolución del TP de la Unidad 8 anterior fue la [esta](https://github.com/santiagovOK/UTN-TUPaD-P3/tree/main/unidad8_jpa).
+Mi resolución del TP de la Unidad 8 anterior fue [esta](https://github.com/santiagovOK/UTN-TUPaD-P3/tree/main/unidad8_jpa).
 
 ### Resumen de funcionalidades implementadas:
 
